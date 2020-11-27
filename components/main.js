@@ -5,7 +5,7 @@ class extends HTMLElement {
     constructor() {
       super();
 
-      // create the raw css from the scss import
+      // create raw some css from the scss import
       const styleCoralCSS = document.createElement('style');
       styleCoralCSS.appendChild(document.createTextNode(coralStyle));
 
@@ -43,7 +43,7 @@ class extends HTMLElement {
           item.style.backgroundColor = '#bad0e4';
         }
       }
-
+//
       const slots = this.shadowRoot.querySelectorAll('slot');
       slots[1].addEventListener('slotchange', function(e) {
         const nodes = slots[1].assignedNodes();

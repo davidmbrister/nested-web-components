@@ -1,4 +1,5 @@
 const faqTemplate = document.createElement('template');
+
 faqTemplate.innerHTML = `
   <style>
   .faq {
@@ -9,7 +10,7 @@ faqTemplate.innerHTML = `
       background-color: #eee;
       color: #444;
       cursor: pointer;
-      padding: 18px;
+      padding: 17px;
       width: 100%;
       text-align: left;
       border-top: 1px inset #444;
@@ -58,7 +59,7 @@ faqTemplate.innerHTML = `
 class faqDropdown extends HTMLElement {
   constructor() {
     super();
-    
+
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(faqTemplate.content.cloneNode(true));
     const toggleBtn = this.shadowRoot.querySelector('#toggle-answer');
