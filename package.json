@@ -4,12 +4,22 @@
   "description": "",
   "main": "faqDropdown.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack  --config webpack.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^4.5.3"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-run": "^1.7.1",
+    "webpack": "^5.8.0",
+    "webpack-cli": "^4.2.0",
+    "node-sass": "^5.0.0",
+    "raw-loader": "^4.0.2",
+    "sass-loader": "^10.1.0"
   }
 }
