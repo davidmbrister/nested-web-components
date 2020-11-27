@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Components Example</title>
+  <style>
+    h3 {
+      color: purple;
+    }
+  </style>
+</head>
+<body>
+  <h3>Hello World</h3>
+
+  <user-card name="Dave" avatar="https://randomuser.me/api/portraits/men/1.jpg"> 
+     <p slot="email">david@brister.com</p>
+     <p slot="phone">123123</p>
+  </user-card>
+
+  <faq-dropdown custom-height="1">
+    <p slot="question">How can it help my child focus?</p>
+    <p slot="answer">It helps them focus by...</p>
+  </faq-dropdown>
+  <faq-dropdown custom-height="2">
+    <p slot="question">How can it help my child focus?</p>
+    <p slot="answer">It helps them focus by...</p>
+  </faq-dropdown>
+  <faq-dropdown custom-height="3">
+    <p slot="question">How can it help my child focus?</p>
+    <p slot="answer">It helps them focus by...</p>
+  </faq-dropdown>
+  <faq-dropdown custom-height="4">
+    <p slot="question">How can it help my child focus?</p>
+    <p slot="answer">It helps them focus by...</p>
+  </faq-dropdown>
+  <faq-dropdown custom-height="5">
+    <p slot="question">How can it help my child focus?</p>
+    <p slot="answer">It helps them focus by...</p>
+  </faq-dropdown>
+ 
+
+  <script src="userCard.js"></script>
+  <script src="faqDropdown.js"></script>
+  
+</body>
+</html>
