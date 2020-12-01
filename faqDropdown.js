@@ -66,8 +66,9 @@ class faqDropdown extends HTMLElement {
     
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(faqTemplate.content.cloneNode(true));
-    this.clickEvent = new CustomEvent("click", {
+    this.clickEvent = new CustomEvent("onclick", {
       bubbles: true,
+      detail: [this.getAttribute('isvisible'), this.getAttribute('index')] ,
       cancelable: false,
     });
     const toggleBtn = this.shadowRoot.querySelector('#toggle-answer');
@@ -82,7 +83,7 @@ class faqDropdown extends HTMLElement {
       toggleBtn.style.maxHeight = '70px';
     }
     else {
-    console.log("equal to null or invalid");
+    //console.log("equal to null or invalid");
     }
   //this.shadowRoot.querySelector('h3').innerText = this.getAttribute('name');
   //console.log("HIIIIII" + this.getAttribute('avatar'));
@@ -93,20 +94,20 @@ class faqDropdown extends HTMLElement {
       this.shadowRoot.querySelector('#toggle-answer').addEventListener('click', () => this.toggleAnswer());
       // add the visibility prop if it's not there
       if (!this.hasAttribute('isvisible')) {
-        console.log("adding isvisible and setting to false")
+        //console.log("adding isvisible and setting to false")
         this.setAttribute('isvisible', 'false');
       }
       if (!this.hasAttribute('index')) {
-        console.log("adding index")
+        //console.log("adding index")
         this.setAttribute('index', 'null');
       }
   }
   toggleAnswer() {
-    this.dispatchEvent(this.clickEvent);
-    console.log(this.clickEvent);
     
     const answerPanel = this.shadowRoot.querySelector('.answer-panel');
     const toggleBtn = this.shadowRoot.querySelector('#toggle-answer');
+
+ 
 
     if(answerPanel.style.maxHeight) {
     toggleBtn.classList.toggle("active");
@@ -118,11 +119,14 @@ class faqDropdown extends HTMLElement {
 
     if (this.getAttribute('isvisible') === 'true') {
       this.setAttribute('isvisible', 'false'); 
-      console.log(this.getAttribute('isvisible'));
+     // console.log(this.getAttribute('isvisible'));
     } else {
       this.setAttribute('isvisible', 'true'); 
-      console.log(this.getAttribute('isvisible'));
+      //console.log(this.getAttribute('isvisible'));
     }
+
+    this.dispatchEvent(this.clickEvent);
+    console.log(this.clickEvent);
   }
 
 
@@ -156,7 +160,7 @@ class faqDropdown extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     //this.displayVal.innerText = this.value;
-    console.log("hello");
+    //console.log("hello");
     // NOW emit an event to the parent to the parent with the value of the changed attribute
 
   }
