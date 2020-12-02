@@ -101,13 +101,14 @@ class faqDropdown extends HTMLElement {
         //console.log("adding index")
         this.setAttribute('index', 'null');
       }
+      this.addEventListener('update', function(e) {
+        console.log("attribute change detail: " + e.detail);
+      })
   }
-  toggleAnswer() {
-    
+  toggleAnimation() {
+       
     const answerPanel = this.shadowRoot.querySelector('.answer-panel');
     const toggleBtn = this.shadowRoot.querySelector('#toggle-answer');
-
- 
 
     if(answerPanel.style.maxHeight) {
     toggleBtn.classList.toggle("active");
@@ -116,6 +117,11 @@ class faqDropdown extends HTMLElement {
     toggleBtn.classList.toggle("active");
     answerPanel.style.maxHeight = answerPanel.scrollHeight + "px";
     }
+  }
+
+  toggleAnswer() {
+    
+    this.toggleAnimation();
 
     if (this.getAttribute('isvisible') === 'true') {
       this.setAttribute('isvisible', 'false'); 
@@ -145,24 +151,19 @@ class faqDropdown extends HTMLElement {
           this.removeAttribute('isvisible');
         }
     }
-  get getIndex() {
-    return this.hasAttribute('index');
-  }
-  
-  set setIndex(val) {
-        if(val) {
-          this.setAttribute('index', val);
-        } 
-    }
   static get observedAttributes() {
     return ['isvisible'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    //this.displayVal.innerText = this.value;
-    //console.log("hello");
-    // NOW emit an event to the parent to the parent with the value of the changed attribute
-
+    console.log("old: " + oldValue);
+    console.log("new: " + newValue);
+    console.log("name: "  + name);
+    if (oldValue) {
+          if (this.getAttribute('isvisible') !== 'true') this.toggleAnimation();
+    }
+    // if this answer is not of the index in the detail, toggle it
+    //this.toggleAnswer();
   }
 }
 window.customElements.define('faq-dropdown', faqDropdown);
