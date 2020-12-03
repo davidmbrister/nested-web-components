@@ -82,16 +82,14 @@ class faqDropdown extends HTMLElement {
     } else if(this.getAttribute('custom-height') === "4") {
       toggleBtn.style.maxHeight = '70px';
     }
-    else {
-    //console.log("equal to null or invalid");
-    }
-  //this.shadowRoot.querySelector('h3').innerText = this.getAttribute('name');
-  //console.log("HIIIIII" + this.getAttribute('avatar'));
-  //this.shadowRoot.querySelector('img').src = this.getAttribute('avatar');
   }
 
   connectedCallback() {
-      this.shadowRoot.querySelector('#toggle-answer').addEventListener('click', () => this.toggleAnswer());
+      //this.shadowRoot.querySelector('#toggle-answer').addEventListener('click', () => this.toggleAnswer());
+      this.shadowRoot.querySelector('#toggle-answer').addEventListener('click', () => {
+        this.dispatchEvent(this.clickEvent);
+        console.log("clicked");
+      });
       // add the visibility prop if it's not there
       if (!this.hasAttribute('isvisible')) {
         //console.log("adding isvisible and setting to false")
@@ -123,23 +121,23 @@ class faqDropdown extends HTMLElement {
     
     this.toggleAnimation();
 
-    if (this.getAttribute('isvisible') === 'true') {
+  /*   if (this.getAttribute('isvisible') === 'true') {
       this.setAttribute('isvisible', 'false'); 
      // console.log(this.getAttribute('isvisible'));
     } else {
       this.setAttribute('isvisible', 'true'); 
       //console.log(this.getAttribute('isvisible'));
-    }
+    } */
 
-    this.dispatchEvent(this.clickEvent);
-    console.log(this.clickEvent);
+    //this.dispatchEvent(this.clickEvent);
+    //console.log(this.clickEvent);
   }
 
 
   disconnectedCallback() {
   this.shadowRoot.querySelector('#toggle-answer').removeEventListener();
   }
-
+/* 
   get isvisible() {
     return this.hasAttribute('isvisible');
   }
@@ -150,7 +148,7 @@ class faqDropdown extends HTMLElement {
         } else {
           this.removeAttribute('isvisible');
         }
-    }
+    } */
   static get observedAttributes() {
     return ['isvisible'];
   }
@@ -160,7 +158,16 @@ class faqDropdown extends HTMLElement {
     console.log("new: " + newValue);
     console.log("name: "  + name);
     if (oldValue) {
-          if (this.getAttribute('isvisible') !== 'true') this.toggleAnimation();
+      if(newValue === 'true' && oldValue === 'true') {
+        console.log("old and new are equal to true, do nothing")
+      }  //if (this.getAttribute('isvisible') !== 'true') this.toggleAnimation();
+      if (newValue === 'true' && oldValue === 'false') {
+        this.toggleAnswer();
+      }
+      if (newValue === 'false' && oldValue === 'true') {
+        this.toggleAnswer();
+      }
+        
     }
     // if this answer is not of the index in the detail, toggle it
     //this.toggleAnswer();

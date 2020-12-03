@@ -23,18 +23,23 @@ export default function defineFaqDropdownGroup() {
             
             console.log("Inside update and showing detail : " + detail);
             console.log(this.itemList[detail[1]]);
-            this.itemList[detail[1]].isvisible
+            
             if (this.itemList[detail[1]].isvisible === 'false'){
-              this.itemList[detail[1]].isvisible = 'true';
-              this.itemList = this.itemList.map((elem, i) => {
-                if (elem.isvisible === 'true' && elem.index !== JSON.stringify(detail[1])) {
+              this.itemList[parseInt(detail[1])].isvisible = 'true';
+           /*    this.itemList = this.itemList.map((elem, i) => {
+                // do some console.logging in here
+                console.log("visibility of this element:" + elem.isvisible)
+                if (elem.isvisible === 'true' && elem.index != detail[1]) {
                   return elem.isvisible = 'false';
-                }
-                else return;
-              }) 
-            } else {
-              this.itemList[detail[1]].isvisible === 'false';
-            }
+                } 
+              }) */ 
+              this.itemList.forEach((elem,i) => {
+                console.log("visibility of this element:" + elem.isvisible)
+                  if (elem.isvisible === 'true' && elem.index != detail[1]) {
+                     elem.isvisible = 'false';
+                  } 
+              })           
+            } 
             console.log("Inside update after update: " + JSON.stringify(this.itemList));
           },
           itemList: []
@@ -50,16 +55,18 @@ export default function defineFaqDropdownGroup() {
           detail: JSON.stringify(this.items),
           cancelable: false,
         });
+
+
         this.addEventListener("onclick", function (e) {
           console.log('listend to click event');
           console.log("The event detail index: " + e.detail[1]);
           console.log("The event detail visibility: " + e.detail[0]);
           
           console.log("The item in the Group list reflecting the elemtent that emitted the event: " + this.items.itemList[e.detail[1]]);
-          console.log("An item index from the itemList called by literal numeric index: " + JSON.stringify(this.items.itemList[parseInt(e.detail[1])].index));
+          //console.log("An item index from the itemList called by literal numeric index: " + JSON.stringify(this.items.itemList[parseInt(e.detail[1])].index));
           // 1. Get the item from the list that needs to be changed.
           this.items.updateItem(e.detail);
-          this.dispatchEvent(this.dispatchGlobalUpdateEvent);
+          //this.dispatchEvent(this.dispatchGlobalUpdateEvent);
 
 
 
@@ -111,17 +118,7 @@ export default function defineFaqDropdownGroup() {
           console.log("Current items on the dropdown object: " +  JSON.stringify(this.items)); 
           console.log("Itemlist length: " +  this.items.itemList.length); 
       }
-
-      static get observedAttributes() {
-        return [''];
-      }
     
- /*      set items(item) {
-        this._items = [...this.items, item];
-      }
-      get items() {
-        return this._items;
-      } */
     }
     window.customElements.define('faq-dropdown-group', FaqDropdownGroup);
 }
