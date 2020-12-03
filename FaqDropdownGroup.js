@@ -25,14 +25,13 @@ export default function defineFaqDropdownGroup() {
             console.log(this.itemList[detail[1]]);
             
             if (this.itemList[detail[1]].isvisible === 'false'){
-              this.itemList[parseInt(detail[1])].isvisible = 'true';
-           /*    this.itemList = this.itemList.map((elem, i) => {
-                // do some console.logging in here
-                console.log("visibility of this element:" + elem.isvisible)
-                if (elem.isvisible === 'true' && elem.index != detail[1]) {
-                  return elem.isvisible = 'false';
-                } 
-              }) */ 
+              console.log(detail[3]);
+              if (detail[3] === 'true'){
+                console.log("don't change the child!")
+              } else {
+                this.itemList[parseInt(detail[1])].isvisible = 'true';
+              }
+
               this.itemList.forEach((elem,i) => {
                 console.log("visibility of this element:" + elem.isvisible)
                   if (elem.isvisible === 'true' && elem.index != detail[1]) {
@@ -46,9 +45,7 @@ export default function defineFaqDropdownGroup() {
         };
         
       }
-    // Add event listener that will catch an event bubbling up with it's id number, 
-    // then make sure all the faqs that don't have that id are turned off
-//
+
       connectedCallback() {
         this.dispatchGlobalUpdateEvent = new CustomEvent("update", {
           bubbles: true,
@@ -67,15 +64,10 @@ export default function defineFaqDropdownGroup() {
           // 1. Get the item from the list that needs to be changed.
           this.items.updateItem(e.detail);
           //this.dispatchEvent(this.dispatchGlobalUpdateEvent);
-
-
-
-
-
-
           // After the first update, the element has to change it's visibility property, which requires a callback and detail message
-          // 2. Reverse the value
-          //(see this.items.upDate)
+          // 2. Reverse the value, (provided the shouldMutateChild flag is true)
+          //   - THIS IS A LOGICAL DESIGN FLAW, no? only one class should be responsible for mutations on an instance, not both classes.
+          //(see this.items.update)
           // 2. Reversing the value in this state will trigger an observedAttribute change triggering event dispatch
               // This requires using a proxy?
           const faqs = Array.from(this.querySelectorAll('faq-dropdown'));
@@ -89,8 +81,13 @@ export default function defineFaqDropdownGroup() {
               console.log("For loop - in it - the index attribute from the tag: " + faq.getAttribute('index'));
               if((faq.getAttribute('index') !== (this.items.itemList[parseInt(e.detail[1])].index))){
                 faq.setAttribute('isvisible', 'false')
+                faq.removeAttribute('data-current');
               }
+              else if (faq.getAttribute('data-current')) {
+                console.log("data-current");
+              }             
               else {
+                faq.removeAttribute('data-current');
                 faq.setAttribute('isvisible', 'true')
               }             
             })       
@@ -122,12 +119,3 @@ export default function defineFaqDropdownGroup() {
     }
     window.customElements.define('faq-dropdown-group', FaqDropdownGroup);
 }
-
-
-/* 
-
-         const data = { name: "addTodo", action: "create", todoText: "" };
-
-                    let el = document.getElementById("addTodo");
-
-                    el.setAttribute("data-request", JSON.stringify(data)); */

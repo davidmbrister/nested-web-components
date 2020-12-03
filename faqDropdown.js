@@ -64,11 +64,12 @@ class faqDropdown extends HTMLElement {
   constructor() {
     super();
     
+    const shouldMutateChild = true;
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(faqTemplate.content.cloneNode(true));
     this.clickEvent = new CustomEvent("onclick", {
       bubbles: true,
-      detail: [this.getAttribute('isvisible'), this.getAttribute('index')] ,
+      detail: [this.getAttribute('isvisible'), this.getAttribute('index'), shouldMutateChild] ,
       cancelable: false,
     });
     const toggleBtn = this.shadowRoot.querySelector('#toggle-answer');
@@ -87,8 +88,15 @@ class faqDropdown extends HTMLElement {
   connectedCallback() {
       //this.shadowRoot.querySelector('#toggle-answer').addEventListener('click', () => this.toggleAnswer());
       this.shadowRoot.querySelector('#toggle-answer').addEventListener('click', () => {
-        this.dispatchEvent(this.clickEvent);
-        console.log("clicked");
+        if (this.getAttribute('isvisible') === 'true') {
+          this.setAttribute('isvisible', 'false'); 
+          shouldMutateChild = false;
+          this.dispatchEvent(this.clickEvent);
+        } else {
+          this.dispatchEvent(this.clickEvent);
+          console.log("clicked");
+        }
+     
       });
       // add the visibility prop if it's not there
       if (!this.hasAttribute('isvisible')) {
@@ -121,34 +129,12 @@ class faqDropdown extends HTMLElement {
     
     this.toggleAnimation();
 
-  /*   if (this.getAttribute('isvisible') === 'true') {
-      this.setAttribute('isvisible', 'false'); 
-     // console.log(this.getAttribute('isvisible'));
-    } else {
-      this.setAttribute('isvisible', 'true'); 
-      //console.log(this.getAttribute('isvisible'));
-    } */
-
-    //this.dispatchEvent(this.clickEvent);
-    //console.log(this.clickEvent);
   }
-
 
   disconnectedCallback() {
   this.shadowRoot.querySelector('#toggle-answer').removeEventListener();
   }
-/* 
-  get isvisible() {
-    return this.hasAttribute('isvisible');
-  }
-  
-  set isvisible(val) {
-        if(val) {
-          this.setAttribute('isvisible', val);
-        } else {
-          this.removeAttribute('isvisible');
-        }
-    } */
+
   static get observedAttributes() {
     return ['isvisible'];
   }
@@ -158,19 +144,36 @@ class faqDropdown extends HTMLElement {
     console.log("new: " + newValue);
     console.log("name: "  + name);
     if (oldValue) {
+      console.log(this.hasAttribute('data-current'));
+      console.log("data set: "+ this.dataset.current);
+      const currentState = this.getAttribute('data-current');
+      console.log("current state: " + this.getAttribute('data-current'))
       if(newValue === 'true' && oldValue === 'true') {
+        this.toggleAnswer();
         console.log("old and new are equal to true, do nothing")
       }  //if (this.getAttribute('isvisible') !== 'true') this.toggleAnimation();
-      if (newValue === 'true' && oldValue === 'false') {
+      else if (newValue === 'true' && oldValue === 'false') {
+        this.setAttribute('data-current', 'true');
         this.toggleAnswer();
       }
-      if (newValue === 'false' && oldValue === 'true') {
+      else if (newValue === 'false' && oldValue === 'true' && currentState == 'true') {
+        console.log("remove data-current and send to parent");
+        this.removeAttribute('data-current');
         this.toggleAnswer();
+      }
+      else if (newValue === 'false' && oldValue === 'true') {
+        this.toggleAnswer();
+      }
+      else if (newValue === 'false' && oldValue === 'false' && currentState == 'true') {
+        console.log("remove data-current and send to parent");
+        this.removeAttribute('data-current');
+      } else if (newValue === 'false' && oldValue === 'false') {        
+ 
+        //this.toggleAnswer();
       }
         
     }
-    // if this answer is not of the index in the detail, toggle it
-    //this.toggleAnswer();
+
   }
 }
 window.customElements.define('faq-dropdown', faqDropdown);
