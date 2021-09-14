@@ -63,7 +63,6 @@ faqTemplate.innerHTML = `
 class faqDropdown extends HTMLElement {
   constructor() {
     super();
-    
     const shouldMutateChild = true;
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(faqTemplate.content.cloneNode(true));
@@ -96,7 +95,6 @@ class faqDropdown extends HTMLElement {
           this.dispatchEvent(this.clickEvent);
           console.log("clicked");
         }
-     
       });
       // add the visibility prop if it's not there
       if (!this.hasAttribute('isvisible')) {
@@ -112,10 +110,8 @@ class faqDropdown extends HTMLElement {
       })
   }
   toggleAnimation() {
-       
     const answerPanel = this.shadowRoot.querySelector('.answer-panel');
     const toggleBtn = this.shadowRoot.querySelector('#toggle-answer');
-
     if(answerPanel.style.maxHeight) {
     toggleBtn.classList.toggle("active");
     answerPanel.style.maxHeight = null;
@@ -126,9 +122,7 @@ class faqDropdown extends HTMLElement {
   }
 
   toggleAnswer() {
-    
     this.toggleAnimation();
-
   }
 
   disconnectedCallback() {
@@ -167,13 +161,9 @@ class faqDropdown extends HTMLElement {
       else if (newValue === 'false' && oldValue === 'false' && currentState == 'true') {
         console.log("remove data-current and send to parent");
         this.removeAttribute('data-current');
-      } else if (newValue === 'false' && oldValue === 'false') {        
- 
-        //this.toggleAnswer();
       }
-        
     }
-
   }
 }
+
 window.customElements.define('faq-dropdown', faqDropdown);
