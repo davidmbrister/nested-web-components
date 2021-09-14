@@ -9,6 +9,8 @@ If you are making changes to the Sass or JS, make sure you run `gulp runwebpack`
 The custom parent element is responsible for making sure only one FAQ is unfolded at a time. 
 The individual FAQS have custom height settings (kinda like style utility classes).
 
+https://user-images.githubusercontent.com/49995760/133271709-62bd1a11-6caa-4380-a428-365343b9bd27.mov
+
 **TODO:**
 - [ ] Make sure only the Group component is mutating attributes on the child components. Currently there is a special case where the child FAQ updates itself and then sends an event detail to the parent indicating the exception.  
 - [ ] Add proper getters and setters for class properties, e.g. the items list in the Group class.  
